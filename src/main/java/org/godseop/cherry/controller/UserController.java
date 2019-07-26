@@ -20,13 +20,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("retrieveUserList")
-    public ResponseEntity<Result> retrieveUserList(@RequestBody Condition condition) {
+    @PostMapping("list")
+    public ResponseEntity<Result> list(@RequestBody Condition condition) {
         Result result = new Result();
 
         List<User> userList = userService.selectUserList();
 
         result.put("userList", userList);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("detail")
+    public ResponseEntity<Result> detail(@RequestBody Condition condition) {
+        Result result = new Result();
+
+        User user = userService.selectUser(condition);
+
+        result.put("user", user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

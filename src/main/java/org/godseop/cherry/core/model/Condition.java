@@ -7,6 +7,6 @@ public class Condition {
 
     private Integer parameter1;
 
-    private String parameter2;
+    private String userId;
 
 }

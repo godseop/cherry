@@ -12,4 +12,8 @@
         <setting name="callSettersOnNulls" value="true"/>
     </settings>
 
+    <typeAliases>
+        <typeAlias type="org.godseop.cherry.core.model.Condition" alias="condition"/>
+    </typeAliases>
+
 </configuration>
