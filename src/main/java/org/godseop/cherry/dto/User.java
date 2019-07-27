@@ -1,5 +1,6 @@
 package org.godseop.cherry.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,15 +11,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import static java.util.stream.Collectors.toList;
+import java.util.Collections;
 
 @Alias("user")
 @Getter @Setter
 @NoArgsConstructor
 @ToString
+@JsonIgnoreProperties(value = {"authorities", "accountNonLocked", "credentialsNonExpired", "accountNonExpired", "enabled"})
 public class User implements UserDetails {
 
     private String userId;
@@ -29,15 +28,17 @@ public class User implements UserDetails {
 
     private String mobile;
 
+    private String email;
+
     private String memo;
 
     private String smsYn;
 
-    private List<String> roles;
+    private String authCode;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
+        return Collections.singletonList(new SimpleGrantedAuthority(authCode));
     }
 
     @Override

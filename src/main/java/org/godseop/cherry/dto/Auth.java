@@ -7,19 +7,21 @@ import lombok.ToString;
 import org.apache.ibatis.type.Alias;
 import org.springframework.security.core.GrantedAuthority;
 
-@Alias("user")
+@Alias("auth")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class Auth implements GrantedAuthority {
 
-    private String userId;
+    private String authCode;
 
-    private String roleName;
+    private String authName;
+
+    private String authDescription;
 
     @Override
     public String getAuthority() {
-        return this.roleName;
+        return this.authCode;
     }
 }

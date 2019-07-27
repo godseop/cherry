@@ -1,18 +1,28 @@
 package org.godseop.cherry.core.jwt;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import org.godseop.cherry.core.exception.CherryException;
+import org.godseop.cherry.core.model.Error;
+import org.godseop.cherry.dto.User;
+import org.godseop.cherry.service.UserService;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
+import java.util.Date;
+
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Autowired
-    JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
-    @Autowired
-    private
-    UserDetailsService userDetailsService;
+    private final UserService userService;
 
     private String secretKey;
 
@@ -21,28 +31,28 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(jwtProperties.getSecretKey().getBytes());
     }
 
-    public String createToken(String username, List<String> roles) {
+    public String createToken(String userId, String authCode) {
 
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("roles", authCode);
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + jwtProperties.getValidityInMs());
 
-        return Jwts.builder()//
-                .setClaims(claims)//
-                .setIssuedAt(now)//
-                .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, secretKey)//
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        User user = userService.loadUserByUsername(getUserId(token));
+        return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    public String getUserId(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
@@ -58,12 +68,9 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+            throw new CherryException(Error.JWT_INVALID_OR_EXPIRED_TOKEN);
         }
     }
+}

@@ -1,12 +1,16 @@
 package org.godseop.cherry.core.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
-public class Condition {
-
-    private Integer parameter1;
+@NoArgsConstructor
+public class Condition implements Serializable {
 
     private String userId;
+
+    private String password;
 
 }

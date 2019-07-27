@@ -9,9 +9,15 @@ import java.util.Optional;
 
 @Mapper
 public interface UserDao {
-    List<User> selectUserList();
+
+    List<User> selectUserList(Condition condition);
+
+    int selectUserListCount(Condition condition);
 
     User selectUser(Condition condition);
 
-    Optional<User> selectUserByUserId(String userId);
+    User selectUserByUserId(String userId);
+
+    void insertUser(User user);
+
 }

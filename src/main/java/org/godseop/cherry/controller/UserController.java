@@ -24,9 +24,11 @@ public class UserController {
     public ResponseEntity<Result> list(@RequestBody Condition condition) {
         Result result = new Result();
 
-        List<User> userList = userService.selectUserList();
+        List<User> userList = userService.selectUserList(condition);
+        int userCount = userService.selectUserListCount(condition);
 
         result.put("userList", userList);
+        result.put("userCount", userCount);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

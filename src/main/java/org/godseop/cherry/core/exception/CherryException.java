@@ -4,15 +4,15 @@ import org.godseop.cherry.core.model.Error;
 
 public class CherryException extends RuntimeException {
 
-    private Error error;
+    private String code;
 
     public CherryException(Error error) {
         super(error.getMessage());
-        this.error = error;
+        this.code = error.getCode();
     }
 
-    public Error getError() {
-        return this.error;
+    public String getCode() {
+        return this.code;
     }
 
 }

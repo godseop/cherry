@@ -2,20 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.godseop.cherry.dao.UserDao">
 
-    <select id="selectUserList" resultType="user">
+    <select id="selectUserList" parameterType="condition" resultType="user">
         SELECT
-            U.*
+            U.USER_ID
+          , U.USER_NAME
+          , U.AUTH_CODE
+          , U.MOBILE
+          , U.EMAIL
+          , U.REG_DT
+          , U.SMS_YN
+        FROM
+            T_USER U
+    </select>
+
+    <select id="selectUserListCount" parameterType="condition" resultType="int">
+        SELECT
+            COUNT(*)
         FROM
             T_USER U
     </select>
 
     <select id="selectUser" parameterType="condition" resultType="user">
         SELECT
-            U.*
+            U.USER_ID
+          , U.USER_NAME
+          , U.AUTH_CODE
+          , U.MOBILE
+          , U.EMAIL
+          , U.REG_DT
+          , U.SMS_YN
         FROM
             T_USER U
         WHERE
             U.USER_ID = #{userId}
     </select>
+
+    <select id="selectUserByUserId" parameterType="string" resultType="user">
+        SELECT
+            U.USER_ID
+          , U.PASSWORD
+          , U.AUTH_CODE
+        FROM
+            T_USER U
+        WHERE
+            U.USER_ID = #{userId}
+    </select>
+
+    <insert id="insertUser" parameterType="user">
+        INSERT INTO T_USER
+            (USER_ID, USER_NAME, PASSWORD, AUTH_CODE, MOBILE, EMAIL, MEMO, REG_ID)
+        VALUES (
+              #{userId}
+            , #{userName}
+            , #{password}
+            , #{authCode}
+            , #{mobile}
+            , #{email}
+            , #{memo}
+            , NULL
+        )
+    </insert>
 
 </mapper>

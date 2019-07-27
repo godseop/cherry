@@ -10,7 +10,8 @@ import java.util.Map;
 @Getter
 public class Result {
 
-    private Error error;
+    private String code;
+    private String message;
 
     private Map<String, Object> data;
 
@@ -28,12 +29,14 @@ public class Result {
     }
 
     public void put(Error error) {
-        this.error = error;
+        this.code = error.getCode();
+        this.message = error.getMessage();
     }
 
     public <E extends Exception> void put(E exception) {
         if (exception instanceof CherryException) {
-            this.error = ((CherryException) exception).getError();
+            this.code = ((CherryException) exception).getCode();
+            this.message = exception.getMessage();
         } else if (exception instanceof SystemException) {
             this.put(Error.SERVICE_UNAVAILABLE);
         } else {
