@@ -46,6 +46,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public User loadUserByUsername(String userId) {
         return userDao.selectUserByUserId(userId);
     }

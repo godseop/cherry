@@ -3,8 +3,7 @@ package org.godseop.cherry.core.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
-import org.godseop.cherry.core.exception.CherryException;
-import org.godseop.cherry.core.model.Error;
+import org.godseop.cherry.core.exception.InvalidJwtAuthenticationException;
 import org.godseop.cherry.dto.User;
 import org.godseop.cherry.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -70,7 +69,7 @@ public class JwtTokenProvider {
 
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new CherryException(Error.JWT_INVALID_OR_EXPIRED_TOKEN);
+            throw new InvalidJwtAuthenticationException("JWT 토큰이 만료되었거나 잘못되었습니다.");
         }
     }
 }

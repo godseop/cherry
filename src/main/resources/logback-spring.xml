@@ -49,7 +49,7 @@
     <logger name="jdbc.resultsettable" level="DEBUG"/>
     <logger name="jdbc.connection" level="OFF"/>
 
-    <logger name="com.zaxxer.hikari" level="INFO"/>
-    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
+    <logger name="org.springframework" level="DEBUG"/>
 
 </configuration>
