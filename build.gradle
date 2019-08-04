@@ -40,4 +40,6 @@ dependencies {
     compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4', version: '1.16'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.8.0'
     compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    compile group: 'com.google.collections', name: 'google-collections', version: '1.0'
+
 }
