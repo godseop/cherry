@@ -2,6 +2,7 @@ package org.godseop.cherry.core.jwt;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -20,7 +21,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             final AuthenticationException authException) throws IOException, ServletException {
 
         log.error("Jwt authentication failed:" + authException);
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Jwt authentication failed");
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized");
     }
 
 }
