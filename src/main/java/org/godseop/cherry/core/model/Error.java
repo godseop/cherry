@@ -30,6 +30,7 @@ public enum Error {
      */
     TOKEN_INVALID("8000", "인증토큰 오류입니다."),
     TOKEN_EXPIRED("8100", "인증토큰이 만료되었습니다."),
+    TOKEN_MALFORMED("8200", "인증토큰 오류입니다."),
     AUTH_NOT_GRANTED("8200", "해당 작업의 권한이 없습니다."),
 
 

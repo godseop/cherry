@@ -33,7 +33,8 @@ public class AuthenticationController {
 
         String userId = user.getUserId();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userId, user.getPassword()));
-        String token = jwtTokenProvider.createToken(userId, userService.loadUserByUsername(userId).getAuthCode());
+        User authUser = userService.loadUserByUsername(userId);
+        String token = jwtTokenProvider.createToken(authUser.getUserId(), authUser.getAuthCode(), authUser.getCompanyCode());
 
         result.put("token", token);
         return new ResponseEntity<>(result, HttpStatus.OK);

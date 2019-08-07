@@ -36,6 +36,8 @@ public class User implements UserDetails {
 
     private String authCode;
 
+    private String companyCode;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(authCode));
